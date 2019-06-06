@@ -99,4 +99,13 @@ public class StrToToken {
             e.printStackTrace();
         }
     }
+
+    public static ArrayList<String> AnalyzeOnArrayList(ArrayList<String> tokens){
+        ArrayList<String> result = new ArrayList<String>();
+        for(int i=0; i<tokens.size(); i++){
+            String token = LexicalSpecifications.Analyze(tokens.get(i));
+            result.add(token);
+        }
+        return result;
+    }
 }

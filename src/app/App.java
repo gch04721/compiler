@@ -4,18 +4,21 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 import Lexical.*;
+import Syntax.*;
 
 public class App {
     public static void main(String[] args) {
-        String fileName = args[0];
+        String fileName = "/Test/test.c";
         String line;
         FileReader reader = null;
         ArrayList<String> tokens = new ArrayList<>();
         Scanner in = new Scanner(System.in);
+
+        final String tokenErrorMsg1 = "ERROR (TOKEN NOT ACCEPT)";
+        final String tokenErrorMsg2 = "ERROR (COMMENT)";
 
         System.out.println("Input C file with path!  ex) C:\\Users\\JuHyeon\\Desktop\\test");
         fileName = in.next();
@@ -35,7 +38,21 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //StrToToken.PrintLexicalAnalysis(fileName, tokens);  // make filename.out & analyze tokens to use dfa
+        ArrayList<String> resultTokens;
+        resultTokens = StrToToken.AnalyzeOnArrayList(tokens);
+        
+        //start check tokens have any error message
+        if(!resultTokens.contains(tokenErrorMsg1) && !resultTokens.contains(tokenErrorMsg2)){
+            // if no, start syntac analyze
+            ArrayList<String> terminals;
+            ReadTokenTable tokenReader = new ReadTokenTable(tokens, resultTokens);
+            terminals = tokenReader.getTerminalSequence();
+            System.out.println(terminals);
 
-        StrToToken.PrintLexicalAnalysis(fileName, tokens);  // make filename.out & analyze tokens to use dfa
+            SyntaxAnalyze syntaxAnalyzer =  new SyntaxAnalyze(terminals);
+            System.out.println(syntaxAnalyzer.analyze());
+        }
+        
     }
 }

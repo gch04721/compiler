@@ -1,0 +1,16 @@
+<INT , int>
+<WHITESPACE ,  >
+<ID , func>
+<LPAREN , (>
+<INT , int>
+<WHITESPACE ,  >
+<ID , a>
+<RPAREN , )>
+<WHITESPACE ,  >
+<LBAREN , {>
+<WHITESPACE ,  >
+<ID , printf>
+<LPAREN , (>
+<ERROR (TOKEN NOT ACCEPT) , "�ȳ��ϼ���);>
+<WHITESPACE ,  >
+<RBAREN , }>
