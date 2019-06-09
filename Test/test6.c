@@ -1,9 +1,6 @@
-int func(int a) 
+int func() 
 { 
-if(a > 10){
- return 0;
+a = a -b;
+
+return a;
 }
-else{
- return 1;
-}
- }

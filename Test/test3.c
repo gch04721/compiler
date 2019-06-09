@@ -1,6 +1,10 @@
 int func(int a) 
 { 
-int a = 0;
-char b = 1;
-
+if(a > 10){
+ int b;
+}
+else{
+ int c;
+}
+return 0;
  }

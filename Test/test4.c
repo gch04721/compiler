@@ -1,4 +1,10 @@
 int func(int a) 
 { 
-printf("¾È³çÇÏ¼¼¿ä");
+if(a > 10){
+ int b;
+}
+else{
+ int c;
+}
+
  }

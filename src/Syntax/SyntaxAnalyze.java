@@ -59,7 +59,6 @@ public class SyntaxAnalyze {
             // for debug
             System.out.println(popedString + "    "+ nextTerminal);
             System.out.println(this.analyzeStack);
-            System.out.println();
 
             if(popedString == "$"){
                 result = "SUCCESS";

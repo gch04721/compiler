@@ -9,9 +9,16 @@
 <WHITESPACE ,  >
 <LBAREN , {>
 <WHITESPACE ,  >
+<INT , int>
+<WHITESPACE ,  >
+<ID , a>
+<TERMINATE , ;>
+<CHAR , char>
+<WHITESPACE ,  >
+<ID , b>
+<TERMINATE , ;>
 <RETURN , return>
 <WHITESPACE ,  >
 <SINGED_INTEGER , 0>
 <TERMINATE , ;>
-<WHITESPACE ,  >
 <RBAREN , }>
