@@ -68,12 +68,17 @@ public class SyntaxAnalyze {
             
             int chk = this.isTerminals(popedString);
             if(chk == -1){
-                // popedString is non-terminal, push new strings
+                // poped string is non-terminal, push new strings
                 Pair<String, String> tmpPair = new Pair<String, String>(popedString, nextTerminal); 
+
+                // check current nonTerminal with next terminal pair is exist in parsing table
                 if(!parsingTable.containsKey(tmpPair)){
+                    // that pair isn't exist, given terminal sequence is wrong.
                     result = "ERROR OCCURED";
                     break;
                 }
+
+                // get predicted next terminals & non-terminals sequence
                 ArrayList<String> tmpList = this.parsingTable.get(tmpPair);
                 for(String str : tmpList){
                     this.analyzeStack.push(str);
@@ -81,6 +86,8 @@ public class SyntaxAnalyze {
             }
             else if(chk == 1){
                 // popedString is terminal, check same or not
+                // if same, move index
+                // else terminate program and show error message
                 if(popedString != nextTerminal){
                     result = "ERROR OCCURED";
                     break;
@@ -90,14 +97,16 @@ public class SyntaxAnalyze {
                 }
             }
             else{
-                // wrong value
+                // wrong input
+                // input string is neither terminals and non-terminals 
+                result = "ERROR OCCURED";
+                break;
             }
         }
         return result;
     }
 
     private int isTerminals(String str){
-
         if(terminals.contains(str))
             return 1;
         else if(this.non_terminals.contains(str))

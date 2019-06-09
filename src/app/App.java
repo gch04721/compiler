@@ -23,6 +23,7 @@ public class App {
         System.out.println("Input C file with path!  ex) C:\\Users\\JuHyeon\\Desktop\\test");
         fileName = in.next();
 
+        // about lexical analyzer
         try {       //try catch for file open
             String file ;
             file = fileName + ".c";
@@ -38,21 +39,30 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //StrToToken.PrintLexicalAnalysis(fileName, tokens);  // make filename.out & analyze tokens to use dfa
+        // for make .out file, uncomment line #43
+        StrToToken.PrintLexicalAnalysis(fileName, tokens);  // make filename.out & analyze tokens to use dfa
+
+        // Syntax analyzer start
         ArrayList<String> resultTokens;
         resultTokens = StrToToken.AnalyzeOnArrayList(tokens);
         
-        //start check tokens have any error message
+        // start check tokens have any error message]
+        // if token has error messages, syntax analyzer do not need to executed
         if(!resultTokens.contains(tokenErrorMsg1) && !resultTokens.contains(tokenErrorMsg2)){
             // if no, start syntac analyze
             ArrayList<String> terminals;
+
+            // change given token sequence to terminal sequence,
             ReadTokenTable tokenReader = new ReadTokenTable(tokens, resultTokens);
             terminals = tokenReader.getTerminalSequence();
             System.out.println(terminals);
 
+            // start syntax analyze
             SyntaxAnalyze syntaxAnalyzer =  new SyntaxAnalyze(terminals);
             System.out.println(syntaxAnalyzer.analyze());
         }
-        
+        else{
+            System.out.println("lexical errors, check .out file");
+        }
     }
 }

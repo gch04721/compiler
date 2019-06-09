@@ -56,7 +56,8 @@ public class InitializeVariables {
     public HashMap<Pair<String, String>, ArrayList<String>> initParsingTable(){
         HashMap<Pair<String, String>, ArrayList<String>> parsingTable = new HashMap<Pair<String, String>, ArrayList<String>>();
         ArrayList<String> tmpList = new ArrayList<>();
-        // add Epsilons
+        
+        // add Epsilons move
         parsingTable.put(Pair.make_pair("CODE", "$"), tmpList);
 
         parsingTable.put(Pair.make_pair("ARG", "rparen"), tmpList);

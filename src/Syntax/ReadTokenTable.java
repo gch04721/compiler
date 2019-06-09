@@ -50,6 +50,7 @@ public class ReadTokenTable {
     }
 
     private void tokenToTerminal(){
+        // from terminalTable, we change all tokens that given by lexical analyzer
         for(int i=0; i<this.resultTokens.size(); i++){
             String terminal = this.terminalTable.get(this.resultTokens.get(i));
             this.resultTokens.set(i, terminal);
@@ -57,6 +58,9 @@ public class ReadTokenTable {
     }
 
     private void divideArithmetic(){
+        // Leixcal analyze give us an arithmetic sign ambiguously
+        // so we need to read original value and check it is add or sub
+        // and it is div or mult
         for(int i=0; i<this.resultTokens.size(); i++){
             if(this.resultTokens.get(i).equals("arithmetic")){
                 if(this.tokens.get(i).equals("+") || this.tokens.get(i).equals("-")){
@@ -73,7 +77,7 @@ public class ReadTokenTable {
         // remove all white space in token list
         this.removeWhiteSpace();
 
-        // int, char to vtype
+        // all given tokens to terminal
         this.tokenToTerminal();
 
         // ARITHMETIC to addsub and multdiv
