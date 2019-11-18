@@ -16,7 +16,17 @@ public class App {
         //System.out.println(fileName);
         LexicalAnalyzer lex = new LexicalAnalyzer(fileName);
         
-        ArrayList<Pair<String, String>> lexList;
-        lexList = lex.getResult();
+        ArrayList<Pair<String, String>> lexResult;
+        boolean checkError = lex.analyze();
+        lexResult = lex.getResult();
+        if(checkError){
+            // Error Msg 출력
+            for(int i=0; i<lexResult.size(); i++){
+                System.out.println(i + "번째 줄 " + lexResult.get(i) + "에서 오타");
+            }
+        }
+        else{
+            // Syntax Analyzer 시작
+        }
     }
 }

@@ -26,11 +26,13 @@ public class LexicalAnalyzer {
     /**
      * error가 난 word를 line number와 함께 저장
      */
-    private ArrayList<Pair<Integer, String>> errorList; 
+    private ArrayList<Pair<String, String>> errorList; 
     /**
      * 파일을 읽은 다음 각 줄을 저장한 ArrayList
      */
     private ArrayList<String> splittedStringList; 
+    private String input;
+    private boolean isError = false;
 
     /**
      * @param input : 파싱할 파일의 이름 설정
@@ -39,8 +41,14 @@ public class LexicalAnalyzer {
         this.resultList = new ArrayList<>();
         this.errorList = new ArrayList<>();
         this.splittedStringList = new ArrayList<>();
-        
-        FileSplit fSplitter = new FileSplit(input);
+        this.input = input;
+    }
+
+    // @TODO
+    public boolean analyze(){
+        this.isError = false; // error 여부 검사, true: 에러 발생
+
+        FileSplit fSplitter = new FileSplit(this.input);
         this.splittedStringList = fSplitter.getResult();
 
         // 각 라인별 파싱 시작
@@ -59,20 +67,19 @@ public class LexicalAnalyzer {
                 } 
                 else if(tokenizer.error == true){
                     // 잘못된 lex
-                    this.errorList.add(new Pair<Integer, String>(i, wordList.get(i)));
+                    this.isError = true;
+                    this.errorList.add(new Pair<String, String>(Integer.toString(i), this.splittedStringList.get(i)));
                 }
             }
         }
-    }
-
-    // @TODO
-    public boolean analyze(){
-        boolean status = false; // error 여부 검사, true: 에러 발생
-
-        return status;
+        return this.isError;
     }
 
     public ArrayList<Pair<String, String>> getResult(){
-        return this.resultList;
+        if(this.isError){
+            return this.errorList;
+        }
+        else
+            return this.resultList;
     }
 }
