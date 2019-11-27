@@ -12,7 +12,6 @@ public class Lexer{
 
     public static Map<Tokens, String> LexerMap = new HashMap<Tokens, String>();
 
-
     private static void createMap(){
         
         //reserved words 
@@ -59,7 +58,7 @@ public class Lexer{
         LexerMap.put(Tokens.PERIOD, "\\.");
         LexerMap.put(Tokens.SEMICOLON, "\\;");
         LexerMap.put(Tokens.COLON, "\\:");
-        LexerMap.put(Tokens.EQUAL, "\\=");
+        LexerMap.put(Tokens.ASSIGN, "\\=");
 
         //comments
         LexerMap.put(Tokens.COMMENTS, "^(/\\*.*\\*/)$");
@@ -81,71 +80,141 @@ public class Lexer{
         return false;
     }
 
-    // public String Analyze(String scan){      // distinguish token type
-    //     if(scan.matches(LexerMap.get(Tokens.INT))){
-    //         return "INT";
-    //     }
-    //     else if(checkCHAR(scan)){
-    //         return "CHAR";
-    //     }
-    //     else if(checkIf(scan)){
-    //         return "IF";
-    //     }
-    //     else if(checkElse(scan)){
-    //         return "ELSE";
-    //     }
-    //     else if(checkWhile(scan)){
-    //         return "WHILE";
-    //     }
-    //     else if(checkReturn(scan)){
-    //         return "RETURN";
-    //     }
-    //     else if(checkArithmetic(scan)){
-    //         return "ARITHMETIC";
-    //     }
-    //     else if(checkAssignment(scan)){
-    //         return "ASSIGN";
-    //     }
-    //     else if(checkComparison(scan)){
-    //         return "COMPARISON";
-    //     }
-    //     else if(checkTerminate(scan)){
-    //         return "TERMINATE";
-    //     }
-    //     else if(checkLPAREN(scan)){
-    //         return "LPAREN";
-    //     }
-    //     else if(checkLBAREN(scan)){
-    //         return "LBAREN";
-    //     }
-    //     else if(checkRPAREN(scan)){
-    //         return "RPAREN";
-    //     }
-    //     else if(checkRBAREN(scan)){
-    //         return "RBAREN";
-    //     }
-    //     else if(checkComma(scan)){
-    //         return "COMMA";
-    //     }
-    //     else if(checkWhitespaces(scan)){
-    //         return "WHITESPACE";
-    //     }
-    //     else if(checkSignedInteger(scan)){
-    //         return "SINGED_INTEGER";
-    //     }
-    //     else if(checkLiteralString(scan)){
-    //         return "LITERAL_STRING";
-    //     }
-    //     else if(checkID(scan)){
-    //         return "ID";
-    //     }
-    //     else if(checkComments(scan)){   //Comments are not allowed
-    //         return "ERROR (COMMENT)";
-    //     }
-    //     else{
-    //         return "ERROR (TOKEN NOT ACCEPT)"; // others are not allowed
-    //     }
-    // }
+    public String Analyze(String scan){   
+
+        //reserved words
+        if(Pattern.matches(LexerMap.get(Tokens.MAINPROG), scan)){
+            return "MAINPROG";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.FUNCTION), scan)){
+            return "FUNCTION";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.PROCEDURE), scan)){
+            return "PROCEDURE";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.BEGIN), scan)){
+            return "BEGIN";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.END), scan)){
+            return "END";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.IF), scan)){
+            return "IF";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.THEN), scan)){
+            return "THEN";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.ELSE), scan)){
+            return "ELSE";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.ELIF), scan)){
+            return "ELIF";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.NOP), scan)){
+            return "NOP";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.WHILE), scan)){
+            return "WHILE";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.RETURN), scan)){
+            return "RETURN";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.FOR), scan)){
+            return "FOR";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.INT), scan)){
+            return "INT";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.FLOAT), scan)){
+            return "FLOAT";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.PRINT), scan)){
+            return "PRINT";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.IN), scan)){
+            return "IN";
+        }
+
+        //literals
+        else if(Pattern.matches(LexerMap.get(Tokens.ID), scan)){
+            return "ID";
+        }
+
+        //operators
+        else if(Pattern.matches(LexerMap.get(Tokens.PLUS), scan)){
+            return "PLUS";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.MINUS), scan)){
+            return "MINUS";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.TIMES), scan)){
+            return "TIMES";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.DIVIDE), scan)){
+            return "DIVIDE";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.LT), scan)){
+            return "LESS THEN";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.LE), scan)){
+            return "LESS EQUAL";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.GT), scan)){
+            return "GREATER THEN";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.GE), scan)){
+            return "GREATER EQUAL";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.EQ), scan)){
+            return "EQUAL";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.NE), scan)){
+            return "NOT EQUAL";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.MINUS), scan)){
+            return "MINUS";
+        }
+
+        //delimiters
+        else if(Pattern.matches(LexerMap.get(Tokens.LPAREN), scan)){
+            return "LPAREN";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.RPAREN), scan)){
+            return "RPAREN";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.LBRACKET), scan)){
+            return "LBRACKET";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.RBRACKET), scan)){
+            return "RBRACKET";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.COMMA), scan)){
+            return "COMMA";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.PERIOD), scan)){
+            return "PERIOD";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.SEMICOLON), scan)){
+            return "SEMICOLON";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.COLON), scan)){
+            return "COLON";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.ASSIGN), scan)){
+            return "ASSIGN";
+        }
+        
+        //comments
+        else if(Pattern.matches(LexerMap.get(Tokens.COMMENTS), scan)){
+            return "COMMENT";
+        }
+        else if(Pattern.matches(LexerMap.get(Tokens.LINECOMMENT), scan)){
+            return "LINECOMMENT";
+        }
+        else{
+            return "ERROR (TOKEN NOT ACCEPT)"; // others are not allowed
+        }
+    }
 
     public static void main(String[] args){
         createMap();
