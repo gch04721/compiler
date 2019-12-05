@@ -1,4 +1,3 @@
-
 package Lexical;
 import Lexical.Token.Tokens;
 
@@ -18,8 +17,8 @@ public class Lexer{
         LexerMap.put(Tokens.MAINPROG, "\\b(mainprog)");
         LexerMap.put(Tokens.FUNCTION, "\\b(function)");
         LexerMap.put(Tokens.PROCEDURE, "\\b(procedure)");
-        LexerMap.put(Tokens.MAINPROG, "\\b(begin)");
-        LexerMap.put(Tokens.MAINPROG, "\\b(end)");
+        LexerMap.put(Tokens.BEGIN, "\\b(begin)");
+        LexerMap.put(Tokens.END, "\\b(end)");
         LexerMap.put(Tokens.IF, "\\b(if)");
         LexerMap.put(Tokens.THEN, "\\b(then)");
         LexerMap.put(Tokens.ELSE, "\\b(else)");
@@ -66,21 +65,9 @@ public class Lexer{
         
     }
 
-    public static boolean isNumber(char c){     //define state number  a.k.a) digits
-        if(c>=48 && c<=57){     // ascii code for 0~9
-            return true;
-        }
-        return false;
-    }
+    public static String Analyze(String scan){   
 
-    public static boolean isLiteral(char c){    //define state Literal a.k.a ) alphabet
-        if((c>=65 && c<=90) || (c>=97 && c<=122)){  // a~z && A~Z
-            return true;
-        }
-        return false;
-    }
-
-    public String Analyze(String scan){   
+        createMap();
 
         //reserved words
         if(Pattern.matches(LexerMap.get(Tokens.MAINPROG), scan)){
@@ -222,5 +209,3 @@ public class Lexer{
         System.out.println(result);
     }
 }
-
-

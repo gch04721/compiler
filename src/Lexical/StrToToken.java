@@ -77,38 +77,42 @@ public class StrToToken {
 
     public static void Tokenize(String str, ArrayList<TokenItem> tokens, int line) {     // str to token
         int i = 0;
+        int length = str.length();
+    
         while (i < str.length()) {
             String token = new String();
-            while ((isLiteral(str.charAt(i)) || isNumber(str.charAt(i)))) {     // if not literal or  not number -> tokenize
+            while (i < str.length() && (isLiteral(str.charAt(i)) || isNumber(str.charAt(i)))) {     // if not literal or  not number -> tokenize
                 token = token + str.charAt(i);
                 i++;
             }
-            tokens.add(new TokenItem(token, line));
+            if(token.length() > 0)
+                tokens.add(new TokenItem(token, line));
 
             String notLiteralToken = new String();
-            if (str.charAt(i) == '>' || str.charAt(i) == '<' || str.charAt(i) == '=' || str.charAt(i) == '!') {     // if comparision check 2 char
-                notLiteralToken = notLiteralToken + str.charAt(i);
-                if (str.charAt(i + 1) == '=') {
-                    i++;
+            if (i < str.length()){
+                if(str.charAt(i) == '>' || str.charAt(i) == '<' || str.charAt(i) == '=' || str.charAt(i) == '!') {     // if comparision check 2 char
                     notLiteralToken = notLiteralToken + str.charAt(i);
+                    if (str.charAt(i + 1) == '=') {
+                        i++;
+                        notLiteralToken = notLiteralToken + str.charAt(i);
+                    }
+                    tokens.add(new TokenItem(notLiteralToken, line));
+                    i++;
+                } else {        // else add tokens
+                    tokens.add(new TokenItem(Character.toString(str.charAt(i)), line));
+                    i++;
                 }
-                tokens.add(new TokenItem(token, line));
-                i++;
-            } else {        // else add tokens
-                tokens.add(new TokenItem(Character.toString(str.charAt(i)), line));
-                i++;
             }
         }
 
-        FloatToken(tokens);
-
         for (int j = 0; j < tokens.size(); j++) {       // if blank token, out
-            if (tokens.get(j).equals("")) {
+            if (tokens.get(j).getToken().equals(" ")) {
                 tokens.remove(j);
                 j--;
             }
         }
         NegativeInteger(tokens);
+        FloatToken(tokens);
     }
 
     private static void FloatToken(ArrayList<TokenItem> tokens) {      //check float type
@@ -118,31 +122,31 @@ public class StrToToken {
         for(int j = 0; j < tokens.size(); j++){
             if(flag == 0 && checkSignedInteger(tokens.get(j).getToken())) {
                 flag++;
-                token = token + tokens.get(j);
+                token = token + tokens.get(j).getToken();
                 lineNum = tokens.get(j).getLine();
                 tokens.remove(j);
 
                 if(j != 0) {
                     j--;
                 }
-            } else if (flag == 1 && tokens.get(j).equals(".")) {
+            } else if (flag == 1 && tokens.get(j).getToken().equals(".")) {
                 flag++;
-                token = token + tokens.get(j);
+                token = token + tokens.get(j).getToken();
                 tokens.remove(j);
                 
                 if(j != 0) {
                     j--;
                 }
             } else if(flag == 2 && checkSignedInteger(tokens.get(j).getToken())) {
-                token = token + tokens.get(j);
+                token = token + tokens.get(j).getToken();
                 tokens.set(j, new TokenItem(token, tokens.get(j).getLine()));
                 flag = flag - 2;
                 token = new String();
             } else if(flag == 1) {      // just number
-                tokens.set(j, new TokenItem(token, tokens.get(j).getLine()));
+                tokens.add(j, new TokenItem(token, tokens.get(j).getLine()));
                 flag--;
             } else if(flag == 2) {      // number.
-                tokens.set(j, new TokenItem(token, tokens.get(j).getLine()));
+                tokens.add(j, new TokenItem(token, tokens.get(j).getLine()));
                 flag = flag - 2;
             }
         }
@@ -154,9 +158,9 @@ public class StrToToken {
     private static void NegativeInteger(ArrayList<TokenItem> tokens) {     // check - , whether SingedInteger or Specification
         String token = new String();
         for (int j = 0; j < tokens.size(); j++) {
-            if (tokens.get(j).equals("-") && !((checkSignedInteger(tokens.get(j - 1).getToken()) || checkID(tokens.get(j - 1).getToken())) || checkWhitespaces(tokens.get(j - 1).getToken()) && (checkSignedInteger(tokens.get(j - 2).getToken()) || checkID(tokens.get(j - 2).getToken())))) {
-                token = token + tokens.get(j);
-                token = token + tokens.get(j + 1);
+            if (tokens.get(j).getToken().equals("-") && !((checkSignedInteger(tokens.get(j - 1).getToken()) || checkID(tokens.get(j - 1).getToken())) || checkWhitespaces(tokens.get(j - 1).getToken()) && (checkSignedInteger(tokens.get(j - 2).getToken()) || checkID(tokens.get(j - 2).getToken())))) {
+                token = token + tokens.get(j).getToken();
+                token = token + tokens.get(j + 1).getToken();
                 tokens.set(j, new TokenItem(token, tokens.get(j).getLine()));
                 tokens.remove(j + 1);
             }

@@ -1,6 +1,6 @@
 package app;
 
-public static class TokenItem {
+public class TokenItem {
     public String token;
     public Integer line;
 
