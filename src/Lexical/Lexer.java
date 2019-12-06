@@ -65,6 +65,18 @@ public class Lexer{
         
     }
 
+    public static boolean isInteger(String scan){    
+        return Pattern.matches("^[+]?[0-9]*[1-9][0-9]*$", scan);
+    }
+
+    public static boolean isNegativeInteger(String scan){    
+        return Pattern.matches("^[-][0-9]*[1-9][0-9]*$", scan);
+    }
+
+    public static boolean isFloat(String scan){    
+        return Pattern.matches("^[0-9]+(?:\\.[0-9]{0,31})?$", scan);
+    }
+
     public static String Analyze(String scan){   
 
         createMap();
@@ -203,9 +215,10 @@ public class Lexer{
         }
     }
 
-    public static void main(String[] args){
-        createMap();
-        boolean result = Pattern.matches(LexerMap.get(Tokens.LINECOMMENT), "// its comment");
-        System.out.println(result);
-    }
+    // public static void main(String[] args){
+    //     createMap();
+    //     // boolean result = Pattern.matches(LexerMap.get(Tokens.LINECOMMENT), "// its comment");
+    //     boolean result = Pattern.matches("^[0-9]+(?:\\.[0-9]{0,31})?$", "55013.25445654");
+    //     System.out.println(result);
+    // }
 }
