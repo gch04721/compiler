@@ -77,6 +77,20 @@ public class Lexer{
         return Pattern.matches("^[0-9]+(?:\\.[0-9]{0,31})?$", scan);
     }
 
+    public static boolean isNumber(char c){     //define state number  a.k.a) digits
+        if(c>=48 && c<=57){     // ascii code for 0~9
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isLiteral(char c){    //define state Literal a.k.a ) alphabet
+        if((c>=65 && c<=90) || (c>=97 && c<=122)){  // a~z && A~Z
+            return true;
+        }
+        return false;
+    }
+
     public static String Analyze(String scan){   
 
         createMap();
