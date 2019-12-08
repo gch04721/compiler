@@ -47,7 +47,7 @@ public class StrToToken {
         if(scan.charAt(0)=='0' && scan.length()==1){    // startwith 0 and end is true
             return true;
         }
-        if(scan.charAt(0)=='-'){        // if start with -
+        if(scan.charAt(0)=='-' && scan.length()!=1){        // if start with -
             if(scan.charAt(1)=='0'){    // next state must not 0
                 return false;
             }
@@ -98,7 +98,24 @@ public class StrToToken {
                     }
                     tokens.add(new TokenItem(notLiteralToken, line));
                     i++;
-                } else {        // else add tokens
+                } else if(str.charAt(i) == '/'){
+                    notLiteralToken = notLiteralToken + str.charAt(i);
+                    if(str.charAt(i + 1) == '/' || str.charAt(i + 1) == '*'){
+                        i++;
+                        notLiteralToken = notLiteralToken + str.charAt(i);
+                    }
+                    tokens.add(new TokenItem(notLiteralToken, line));
+                    i++;
+                } else if(str.charAt(i) == '*'){
+                    notLiteralToken = notLiteralToken + str.charAt(i);
+                    if(str.charAt(i + 1) == '/'){
+                        i++;
+                        notLiteralToken = notLiteralToken + str.charAt(i);
+                    }
+                    tokens.add(new TokenItem(notLiteralToken, line));
+                    i++;
+                }
+                else {        // else add tokens
                     tokens.add(new TokenItem(Character.toString(str.charAt(i)), line));
                     i++;
                 }
@@ -144,9 +161,11 @@ public class StrToToken {
                 token = new String();
             } else if(flag == 1) {      // just number
                 tokens.add(j, new TokenItem(token, tokens.get(j).getLine()));
+                token = new String();
                 flag--;
             } else if(flag == 2) {      // number.
                 tokens.add(j, new TokenItem(token, tokens.get(j).getLine()));
+                token = new String();
                 flag = flag - 2;
             }
         }
@@ -158,7 +177,7 @@ public class StrToToken {
     private static void NegativeInteger(ArrayList<TokenItem> tokens) {     // check - , whether SingedInteger or Specification
         String token = new String();
         for (int j = 0; j < tokens.size(); j++) {
-            if (tokens.get(j).getToken().equals("-") && !((checkSignedInteger(tokens.get(j - 1).getToken()) || checkID(tokens.get(j - 1).getToken())) || checkWhitespaces(tokens.get(j - 1).getToken()) && (checkSignedInteger(tokens.get(j - 2).getToken()) || checkID(tokens.get(j - 2).getToken())))) {
+            if (tokens.get(j).getToken().equals("-") && !(checkSignedInteger(tokens.get(j - 1).getToken()) || checkID(tokens.get(j - 1).getToken())) && (checkSignedInteger(tokens.get(j - 2).getToken()) || checkID(tokens.get(j - 2).getToken())) && !(tokens.get(j - 1).getToken().equals("=") && checkID(tokens.get(j + 1).getToken()))) {
                 token = token + tokens.get(j).getToken();
                 token = token + tokens.get(j + 1).getToken();
                 tokens.set(j, new TokenItem(token, tokens.get(j).getLine()));
@@ -175,6 +194,17 @@ public class StrToToken {
             BufferedWriter bufWriter = new BufferedWriter(writer);
 
             for (int j = 0; j < tokens.size(); j++) {
+                if(Lexer.Analyze(tokens.get(j).getToken()).equals("LINECOMMENT")){  // //~ skip
+                    int line = tokens.get(j).getLine();
+                    int count = j + 1;
+                    while(tokens.get(count).getLine()==line){
+                        count++;
+                    }
+                    j = count;
+                } else if(Lexer.Analyze(tokens.get(j).getToken()).equals("COMMENT")){ // /*~*/ skip
+                    j++;
+                }
+
                 bufWriter.write("<" + Lexer.Analyze(tokens.get(j).getToken()) + " , " + tokens.get(j).getToken() + ">");
                 bufWriter.newLine();
             }

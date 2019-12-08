@@ -3,8 +3,6 @@ import Lexical.Token.Tokens;
 
 import java.util.Map;
 import java.util.HashMap;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer{
@@ -46,7 +44,7 @@ public class Lexer{
         LexerMap.put(Tokens.GE, "\\>=");
         LexerMap.put(Tokens.EQ, "\\==");
         LexerMap.put(Tokens.NE, "\\!=");
-        LexerMap.put(Tokens.MINUS, "\\!");
+        LexerMap.put(Tokens.LNOT, "\\!");
 
         // delimiters
         LexerMap.put(Tokens.LPAREN, "\\(");
@@ -66,29 +64,11 @@ public class Lexer{
     }
 
     public static boolean isInteger(String scan){    
-        return Pattern.matches("^[-+]?[0-9]*[1-9][0-9]*$", scan);
+        return Pattern.matches("^[-+]?[0-9]*[0-9][0-9]*$", scan);
     }
-
-    // public static boolean isNegativeInteger(String scan){    
-    //     return Pattern.matches("^[-][0-9]*[1-9][0-9]*$", scan);
-    // }
 
     public static boolean isFloat(String scan){    
         return Pattern.matches("^[-+]?[0-9]*(\\.[0-9]+)$", scan);
-    }
-
-    public static boolean isNumber(char c){     //define state number  a.k.a) digits
-        if(c>=48 && c<=57){     // ascii code for 0~9
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isLiteral(char c){    //define state Literal a.k.a ) alphabet
-        if((c>=65 && c<=90) || (c>=97 && c<=122)){  // a~z && A~Z
-            return true;
-        }
-        return false;
     }
 
     public static String Analyze(String scan){   
