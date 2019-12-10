@@ -1,0 +1,12 @@
+mainprog test7;
+
+function nosemicol (x : int);
+int temp;
+begin
+temp = -x //no ;
+return temp
+end
+
+begin
+nosemicol(10)
+end

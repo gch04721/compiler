@@ -1,0 +1,15 @@
+mainprog test3;
+float undefined, temp;
+
+procedure spellerror(x : int);
+int num2;
+begin
+num2 = 100 / x
+end
+
+begin
+undefined = 654.6;
+temp = -nudefined; //spell error
+spellError(10); //spell error
+undefinedFunc() //undefined function
+end

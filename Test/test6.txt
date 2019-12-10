@@ -1,0 +1,6 @@
+mainprog test6;
+int illegalChar;% //illegal character
+
+begin
+nop */no operation //comment error
+end

@@ -1,0 +1,92 @@
+--<문법 참고용>---
+
+mainprog ID;
+
+    // <declarations>   
+        int a;  
+        float b, c;
+        int [10] d;
+        (epsilon)
+
+
+    //<subprogram_declarations>
+        procedure ID (x : int); <declarations> <compound_statement>
+        
+        procedure ID (y, z : float); <declarations> <compound_statement>
+
+        procedure ID (w : int[3]); <declarations> <compound_statement>
+
+        procedure ID (v : int; u : int); <declarations> <compound_statement>
+
+        procedure ID; <declarations> <compound_statement>
+
+        function ID : int 또는 float; <declarations> <compound_statement>
+        function ID (<parameter_list>) : int 또는 float; <declarations> <compound_statement>
+
+        (epsilon)
+
+
+    //<compound_statement> -> begin <statement_list> end
+        begin
+        
+        //<statement>
+            //<variable> = <expression>;    
+                
+            //<print_statement>;
+                print;
+                print(<expression>);
+
+            //<procedure_statement>;
+                func1();
+                func2(<expression>);
+                func3(<expression>, <expression>);
+
+            <compound_statement>;
+
+            //<if_statement>;
+                if <expression> : <statement>;
+                if <expression> : <statement> elif <expression> : <statement>;
+                if <expression> : <statement> elif <expression> : <statement> elif <expression> : <statement>;
+                    
+                if <expression> : <statement> else : <expression>;
+                if <expression> : <statement> elif <expression> : <statement> else : <expression>;
+
+            //<while_statement>;
+                while <expression> : <statement>;
+                while <expression> : <statement> else : <statement>;
+
+            //<for_statement>;
+                for <expression> in <expression> : <statement>;
+                for <expression> in <expression> : <statement> else : <statement>;
+
+            return <expression>;
+
+            nop; 
+
+            <statement>
+
+        end
+
+
+--------------
+<expression>
+
+    <simple_expression>
+        <term>
+            <factor>
+                <int나 float>
+                <variable>
+                <procedure_statement>
+                !<factor>
+                +-<factor>
+            <factor> */ <term>
+        
+        <term> +- <simple_expression>
+
+
+    <simple_expression> > <simple_expression>
+    <simple_expression> >= <simple_expression>
+    <simple_expression> <= <simple_expression>
+    <simple_expression> == <simple_expression>
+    <simple_expression> != <simple_expression>
+    <simple_expression> in <simple_expression>

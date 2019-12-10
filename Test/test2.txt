@@ -1,0 +1,11 @@
+mainprog test2;
+
+procedure wrongRange;
+int var;
+begin
+var = 0
+end
+
+begin
+return var //error
+end

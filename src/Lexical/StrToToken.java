@@ -86,8 +86,8 @@ public class StrToToken {
                 i++;
             }
             if(token.length() > 0)
-                tokens.add(new TokenItem(token, line));
-
+                tokens.add(new TokenItem(Lexer.Analyze(token), token, line));
+            
             String notLiteralToken = new String();
             if (i < str.length()){
                 if(str.charAt(i) == '>' || str.charAt(i) == '<' || str.charAt(i) == '=' || str.charAt(i) == '!') {     // if comparision check 2 char
@@ -96,7 +96,7 @@ public class StrToToken {
                         i++;
                         notLiteralToken = notLiteralToken + str.charAt(i);
                     }
-                    tokens.add(new TokenItem(notLiteralToken, line));
+                    tokens.add(new TokenItem(Lexer.Analyze(notLiteralToken), notLiteralToken, line));
                     i++;
                 } else if(str.charAt(i) == '/'){
                     notLiteralToken = notLiteralToken + str.charAt(i);
@@ -104,7 +104,7 @@ public class StrToToken {
                         i++;
                         notLiteralToken = notLiteralToken + str.charAt(i);
                     }
-                    tokens.add(new TokenItem(notLiteralToken, line));
+                    tokens.add(new TokenItem(Lexer.Analyze(notLiteralToken), notLiteralToken, line));
                     i++;
                 } else if(str.charAt(i) == '*'){
                     notLiteralToken = notLiteralToken + str.charAt(i);
@@ -112,18 +112,18 @@ public class StrToToken {
                         i++;
                         notLiteralToken = notLiteralToken + str.charAt(i);
                     }
-                    tokens.add(new TokenItem(notLiteralToken, line));
+                    tokens.add(new TokenItem(Lexer.Analyze(notLiteralToken), notLiteralToken, line));
                     i++;
                 }
                 else {        // else add tokens
-                    tokens.add(new TokenItem(Character.toString(str.charAt(i)), line));
+                    tokens.add(new TokenItem(Lexer.Analyze(Character.toString(str.charAt(i))), Character.toString(str.charAt(i)),  line));
                     i++;
                 }
             }
         }
 
         for (int j = 0; j < tokens.size(); j++) {       // if blank token, out
-            if (tokens.get(j).getToken().equals(" ")) {
+            if (tokens.get(j).getString().equals(" ")) {
                 tokens.remove(j);
                 j--;
             }
@@ -137,40 +137,40 @@ public class StrToToken {
         int lineNum = 0;
         String token = new String();
         for(int j = 0; j < tokens.size(); j++){
-            if(flag == 0 && checkSignedInteger(tokens.get(j).getToken())) {
+            if(flag == 0 && checkSignedInteger(tokens.get(j).getString())) {
                 flag++;
-                token = token + tokens.get(j).getToken();
+                token = token + tokens.get(j).getString();
                 lineNum = tokens.get(j).getLine();
                 tokens.remove(j);
 
                 if(j != 0) {
                     j--;
                 }
-            } else if (flag == 1 && tokens.get(j).getToken().equals(".")) {
+            } else if (flag == 1 && tokens.get(j).getString().equals(".")) {
                 flag++;
-                token = token + tokens.get(j).getToken();
+                token = token + tokens.get(j).getString();
                 tokens.remove(j);
                 
                 if(j != 0) {
                     j--;
                 }
-            } else if(flag == 2 && checkSignedInteger(tokens.get(j).getToken())) {
-                token = token + tokens.get(j).getToken();
-                tokens.set(j, new TokenItem(token, tokens.get(j).getLine()));
+            } else if(flag == 2 && checkSignedInteger(tokens.get(j).getString())) {
+                token = token + tokens.get(j).getString();
+                tokens.set(j, new TokenItem(Lexer.Analyze(token), token, tokens.get(j).getLine()));
                 flag = flag - 2;
                 token = new String();
             } else if(flag == 1) {      // just number
-                tokens.add(j, new TokenItem(token, tokens.get(j).getLine()));
+                tokens.add(j, new TokenItem(Lexer.Analyze(token), token, tokens.get(j).getLine()));
                 token = new String();
                 flag--;
             } else if(flag == 2) {      // number.
-                tokens.add(j, new TokenItem(token, tokens.get(j).getLine()));
+                tokens.add(j, new TokenItem(Lexer.Analyze(token), token, tokens.get(j).getLine()));
                 token = new String();
                 flag = flag - 2;
             }
         }
         if(flag == 1 || flag == 2) {
-            tokens.add(new TokenItem(token, lineNum));
+            tokens.add(new TokenItem(Lexer.Analyze(token), token, lineNum));
         }
     }
 
@@ -180,7 +180,7 @@ public class StrToToken {
             if (tokens.get(j).getToken().equals("-") && !(checkSignedInteger(tokens.get(j - 1).getToken()) || checkID(tokens.get(j - 1).getToken())) && (checkSignedInteger(tokens.get(j - 2).getToken()) || checkID(tokens.get(j - 2).getToken())) && !(tokens.get(j - 1).getToken().equals("=") && checkID(tokens.get(j + 1).getToken()))) {
                 token = token + tokens.get(j).getToken();
                 token = token + tokens.get(j + 1).getToken();
-                tokens.set(j, new TokenItem(token, tokens.get(j).getLine()));
+                tokens.set(j, new TokenItem(Lexer.Analyze(token), token, tokens.get(j).getLine()));
                 tokens.remove(j + 1);
             }
         }
@@ -194,18 +194,18 @@ public class StrToToken {
             BufferedWriter bufWriter = new BufferedWriter(writer);
 
             for (int j = 0; j < tokens.size(); j++) {
-                if(Lexer.Analyze(tokens.get(j).getToken()).equals("LINECOMMENT")){  // //~ skip
+                if((tokens.get(j).getToken()).equals("LINECOMMENT")){  // //~ skip
                     int line = tokens.get(j).getLine();
                     int count = j + 1;
                     while(tokens.get(count).getLine()==line){
                         count++;
                     }
                     j = count;
-                } else if(Lexer.Analyze(tokens.get(j).getToken()).equals("COMMENT")){ // /*~*/ skip
+                } else if((tokens.get(j).getToken()).equals("COMMENT")){ // /*~*/ skip
                     j++;
                 }
 
-                bufWriter.write("<" + Lexer.Analyze(tokens.get(j).getToken()) + " , " + tokens.get(j).getToken() + ">");
+                bufWriter.write("<" +(tokens.get(j).getToken()) + " , " + tokens.get(j).getString() + ">");
                 bufWriter.newLine();
             }
 
@@ -218,11 +218,22 @@ public class StrToToken {
         }
     }
 
-    public static ArrayList<String> AnalyzeOnArrayList(ArrayList<String> tokens){
-        ArrayList<String> result = new ArrayList<String>();
+    public static ArrayList<TokenItem> AnalyzeOnArrayList(ArrayList<TokenItem> tokens){
+        ArrayList<TokenItem> result = new ArrayList<TokenItem>();
         for(int i=0; i<tokens.size(); i++){
-            String token = Lexer.Analyze(tokens.get(i));
-            result.add(token);
+            if((tokens.get(i).getToken()).equals("LINECOMMENT")){
+                int line = tokens.get(i).getLine();
+                int count = i + 1;
+                while(tokens.get(count).getLine() == line){
+                    count ++;
+                }
+                i = count;
+            }
+            else if((tokens.get(i).getToken()).equals("COMMENT")){ // /*~*/ skip
+                i++;
+            }
+            
+            result.add(tokens.get(i));
         }
         return result;
     }

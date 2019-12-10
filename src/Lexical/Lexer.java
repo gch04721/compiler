@@ -164,8 +164,8 @@ public class Lexer{
         else if(Pattern.matches(LexerMap.get(Tokens.NE), scan)){
             return "NOT EQUAL";
         }
-        else if(Pattern.matches(LexerMap.get(Tokens.MINUS), scan)){
-            return "MINUS";
+        else if(Pattern.matches(LexerMap.get(Tokens.LNOT), scan)){
+            return "NOT";
         }
 
         //delimiters

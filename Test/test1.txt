@@ -1,0 +1,8 @@
+mainprog test1;
+int unpaired;
+
+begin
+unpaired = 100;
+begin
+//no end
+end

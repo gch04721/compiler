@@ -1,0 +1,13 @@
+mainprog test10;
+int getval;
+
+function wrongReturn : int;
+float value;
+begin
+value = 11.1;
+return value
+end
+
+begin
+getval = wrongReturn()
+end

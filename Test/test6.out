@@ -1,22 +1,13 @@
+<MAINPROG , mainprog>
+<ID , test6>
+<SEMICOLON , ;>
 <INT , int>
-<WHITESPACE ,  >
-<ID , func>
-<LPAREN , (>
-<RPAREN , )>
-<WHITESPACE ,  >
-<LBAREN , {>
-<WHITESPACE ,  >
-<ID , a>
-<WHITESPACE ,  >
-<ASSIGN , =>
-<WHITESPACE ,  >
-<ID , a>
-<WHITESPACE ,  >
-<ARITHMETIC , ->
-<ID , b>
-<TERMINATE , ;>
-<RETURN , return>
-<WHITESPACE ,  >
-<ID , a>
-<TERMINATE , ;>
-<RBAREN , }>
+<ID , illegalChar>
+<SEMICOLON , ;>
+<ERROR (TOKEN NOT ACCEPT) , %>
+<BEGIN , begin>
+<NOP , nop>
+<ERROR (TOKEN NOT ACCEPT) , */>
+<ID , no>
+<ID , operation>
+<END , end>

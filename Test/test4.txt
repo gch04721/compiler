@@ -1,0 +1,6 @@
+mainprog test4;
+int wrongtype;
+
+begin
+wrongtype = -23.165
+end

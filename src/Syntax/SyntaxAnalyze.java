@@ -2,6 +2,9 @@ package Syntax;
 
 import java.util.ArrayList;
 import java.util.Stack;
+
+import app.TokenItem;
+
 import java.util.HashMap;
 
 
@@ -11,18 +14,18 @@ import java.util.HashMap;
 
 
 public class SyntaxAnalyze {
-    final String startSymbol = "CODE";
+    final String startSymbol = "PROGRAM";
     final String endSymbol = "$";
 
     private Stack<String> analyzeStack = new Stack<String>();
-    private ArrayList<String> terminalSequence;
+    private ArrayList<TokenItem> terminalSequence;
 
     private ArrayList<String> terminals = new ArrayList<String>();
     private ArrayList<String> non_terminals = new ArrayList<String>();
 
     private HashMap<Pair<String, String>, ArrayList<String>> parsingTable = new HashMap<Pair<String, String>, ArrayList<String>>();
 
-    public SyntaxAnalyze(ArrayList<String> terminalSequence){
+    public SyntaxAnalyze(ArrayList<TokenItem> terminalSequence){
         analyzeStack.push(endSymbol);
         analyzeStack.push(startSymbol);
         this.terminalSequence = terminalSequence;
@@ -36,16 +39,17 @@ public class SyntaxAnalyze {
     }
 
     public String analyze(){
-        String result = "";
+        String result = "Success";
         int index = -1;
         final int maxIndex = this.terminalSequence.size();
         boolean indexNext = true;
-        String nextTerminal= "";
+        TokenItem nextTerminal= new TokenItem("", "", -1);
+        boolean typeInput = true;
         while(!this.analyzeStack.isEmpty()){
             if(indexNext){
                 index = index + 1;
                 if(index == maxIndex){
-                    nextTerminal = "$";
+                    nextTerminal = new TokenItem("$", "", -1);
                     indexNext = false;
                 }
                 else{
@@ -53,27 +57,25 @@ public class SyntaxAnalyze {
                     indexNext = false;
                 }
             }
-
-            String popedString = this.analyzeStack.pop();
-
             // for debug
-            System.out.println(popedString + "    "+ nextTerminal);
-            System.out.println(this.analyzeStack);
+            //System.out.println(this.analyzeStack);
+            String popedString = this.analyzeStack.pop();
+            //System.out.println(popedString + "\t"+ nextTerminal.getToken() + ", " +nextTerminal.getString());
 
             if(popedString == "$"){
                 result = "SUCCESS";
                 break;
             }
-            
+
             int chk = this.isTerminals(popedString);
             if(chk == -1){
                 // poped string is non-terminal, push new strings
-                Pair<String, String> tmpPair = new Pair<String, String>(popedString, nextTerminal); 
+                Pair<String, String> tmpPair = new Pair<String, String>(popedString, nextTerminal.getToken()); 
 
                 // check current nonTerminal with next terminal pair is exist in parsing table
                 if(!parsingTable.containsKey(tmpPair)){
-                    // that pair isn't exist, given terminal sequence is wrong.
-                    result = "ERROR OCCURED";
+                    // that pair isn't exist, given terminal sequence is wrong.                  
+                    result = "Line #:" + nextTerminal.getLine() + " Token: " + nextTerminal.getString() +", ERROR OCCURRED, WRONG GRAMMAR";
                     break;
                 }
 
@@ -87,8 +89,8 @@ public class SyntaxAnalyze {
                 // popedString is terminal, check same or not
                 // if same, move index
                 // else terminate program and show error message
-                if(popedString != nextTerminal){
-                    result = "ERROR OCCURED";
+                if(popedString != nextTerminal.getToken()){
+                    result = "Line #:" + nextTerminal.getLine() + " Token: " + nextTerminal.getString() +", ERROR OCCURRED, WRONG GRAMMAR";
                     break;
                 }   
                 else{
@@ -98,7 +100,7 @@ public class SyntaxAnalyze {
             else{
                 // wrong input
                 // input string is neither terminals and non-terminals 
-                result = "ERROR OCCURED";
+                result = "Line #:" + nextTerminal.getLine() + " Token: " + nextTerminal.getString() +", ERROR OCCURRED, WRONG GRAMMAR";
                 break;
             }
         }

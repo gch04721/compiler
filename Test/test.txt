@@ -1,0 +1,40 @@
+mainprog test;
+int a, d;
+float b;
+int [3] c;
+
+procedure pd1(x : int);
+int num;
+begin
+a = x + 100;
+num = -a;
+print(num)
+end
+
+procedure pd2(arr : int[3]);
+int i;
+begin
+i = 0;
+for i in arr : i = i + 1
+end
+
+function func1(var, y : float ; z : int) : int;
+begin
+print(var);
+begin
+if var == 10.0 : b = var * y
+elif var < 15.0 : b = var / y
+else : b = 0.0
+end;
+while z < 5 : z = z * 2;
+return z
+end
+
+begin
+c[0] = 0;
+c[1] = 1;
+c[2] = 2;
+pd1(50);
+pd2(c);
+d = func1(10.0, 2.0, -5)
+end
